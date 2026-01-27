@@ -1,9 +1,87 @@
-const urlBase = 'http://cop4331.xyz/LAMPAPI';
+const urlBase = 'http://lampcolorsryan.foo/LAMPAPI';
 const extension = 'php';
 
 let userId = 0;
 let firstName = "";
 let lastName = "";
+
+
+function showSignup()
+{
+    document.getElementById("loginDiv").style.display = "none";
+    document.getElementById("signupDiv").style.display = "block";
+    document.getElementById("signupResult").innerHTML = "";
+}
+
+function showLogin()
+{
+    document.getElementById("loginDiv").style.display = "block";
+    document.getElementById("signupDiv").style.display = "none";
+    document.getElementById("loginResult").innerHTML = "";
+}
+
+function doSignup()
+{
+    let newFirstName = document.getElementById("signupFirstName").value;
+    let newLastName = document.getElementById("signupLastName").value;
+    let newUsername = document.getElementById("signupUsername").value;
+    let newPassword = document.getElementById("signupPassword").value;
+
+    document.getElementById("signupResult").innerHTML = "";
+
+    // Validate fields
+    if (!newFirstName || !newLastName || !newUsername || !newPassword)
+    {
+        document.getElementById("signupResult").innerHTML = "Please fill in all fields";
+        return;
+    }
+
+    let tmp = {
+        firstName: newFirstName,
+        lastName: newLastName,
+        login: newUsername,
+        password: newPassword
+    };
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/Signup.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try
+    {
+        xhr.onreadystatechange = function()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                let jsonObject = JSON.parse(xhr.responseText);
+
+                if (jsonObject.error && jsonObject.error !== "")
+                {
+                    document.getElementById("signupResult").innerHTML = jsonObject.error;
+                    return;
+                }
+
+                document.getElementById("signupResult").innerHTML = "Account created! Please login.";
+
+                // Clear form
+                document.getElementById("signupFirstName").value = "";
+                document.getElementById("signupLastName").value = "";
+                document.getElementById("signupUsername").value = "";
+                document.getElementById("signupPassword").value = "";
+
+                // Switch to login after 2 seconds
+                setTimeout(showLogin, 2000);
+            }
+        };
+        xhr.send(jsonPayload);
+    }
+    catch(err)
+    {
+        document.getElementById("signupResult").innerHTML = err.message;
+    }
+}
 
 function doLogin()
 {
