@@ -5,7 +5,7 @@
 	$searchResults = "";
 	$searchCount = 0;
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "project_dev");
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
@@ -65,4 +65,5 @@
 		sendResultInfoAsJson( $retValue );
 	}
 	
+
 ?>
