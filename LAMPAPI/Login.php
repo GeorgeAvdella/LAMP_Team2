@@ -7,7 +7,8 @@
 	$firstName = "";
 	$lastName = "";
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "project_dev"); 	
+	$cfg = require __DIR__ . "/config.php";
+	$conn = new mysqli($cfg["db_host"], $cfg["db_user"], $cfg["db_pass"], $cfg["db_name"]);	
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
