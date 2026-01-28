@@ -1,21 +1,39 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>COP 4331 LAMP Stack Demo</title>
-	<script type="text/javascript" src="js/md5.js"></script>
-	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Manager</title>
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/code.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
 
-<h1 id="title">COP 4331 LAMP Stack Demo</h1>
+<h1 id="title">Contact Manager</h1>
 
+<!-- Login Form -->
 <div id="loginDiv">
-	<span id="inner-title">PLEASE LOG IN</span>
-	<input type="text" id="loginName" placeholder="Username" /><br />
-	<input type="password" id="loginPassword" placeholder="Password"/><br />
-	<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Do It </button>
-	<span id="loginResult"></span>
+    <span id="inner-title">Login</span><br /><br />
+    <input type="text" id="loginName" placeholder="Username" /><br />
+    <input type="password" id="loginPassword" placeholder="Password" /><br />
+    <button type="button" id="loginButton" class="buttons" onclick="doLogin();">Login</button><br />
+    <span id="loginResult"></span>
+    <br />
+    <button type="button" class="buttons" onclick="showSignup();">Create New Account</button>
+</div>
+
+<!-- Signup Form -->
+<div id="signupDiv" style="display:none;">
+    <span id="inner-title">Create New Account</span><br /><br />
+    <input type="text" id="signupFirstName" placeholder="First Name" /><br />
+    <input type="text" id="signupLastName" placeholder="Last Name" /><br />
+    <input type="text" id="signupUsername" placeholder="Username" /><br />
+    <input type="password" id="signupPassword" placeholder="Password" /><br />
+    <button type="button" id="signupButton" class="buttons" onclick="doSignup();">Sign Up</button><br />
+    <span id="signupResult"></span>
+    <br />
+    <button type="button" class="buttons" onclick="showLogin();">Back to Login</button>
 </div>
 
 </body>
