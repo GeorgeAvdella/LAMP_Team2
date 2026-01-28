@@ -13,13 +13,14 @@ body
     color: #FFFFFF;
 }
 
-#loginDiv
+#loginDiv, #signupDiv
 {
-    font-size: 30px;
-    width: 70%;
-    margin-left: 15%;
-    padding: 25px;
-    background-color: #b2b2b2;
+	max-width: 420px;
+    margin: 60px auto;
+	padding: 30px;
+	background-color: #666666;
+	border-radius: 12px;
+	box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 #loggedInDiv
@@ -47,12 +48,19 @@ body
     width: 50%;
     margin-left: 25%;
     font-family: 'Ubuntu', sans-serif;
+
+	cursor: pointer;
+	transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttons:hover{
     background-color: #00d5124f;
     color: #FFFFFF;
     opacity: 50%;
+}
+
+.buttons:active {
+	transform: scale(0.98);
 }
 
 #loginName
@@ -79,15 +87,17 @@ input[type="text"],input[type="password"]{
     margin-left: 10%;
     margin-bottom: 2%;
     font-family: 'Ubuntu', sans-serif;
+	font-size: 18px;
 }
 
 #inner-title{
     display: inline-block;
-    font-size: 0.8em;
+    font-size: 1.2em;
+	font-weight: bold;
     width: 90%;
     text-align: center;
     margin-left: 5%;
-    margin-bottom: 2%;
+    margin-bottom: 15px;
     font-family: 'Ubuntu', sans-serif;
     color: #95060a;
 }
@@ -137,4 +147,12 @@ select{
     margin-bottom: 1%;
     font-family: 'Ubuntu', sans-serif;
     color: #95060a;
+}
+
+.error {
+	color: #fc100d;
+}
+
+.success {
+	color: #5cb85c;
 }
