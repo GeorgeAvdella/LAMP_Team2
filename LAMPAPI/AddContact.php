@@ -12,7 +12,7 @@ $last_name= trim($in_data["lastName"] ?? "");
 $phone = trim( $in_data["phone"] ?? "" );
 $email= trim($in_data["email"] ?? "");
 
-if ($user_id <= 0 || ($first_name=="" && $last_name=="" && $phone=="" && $email==""))
+if ($user_id <= 0 || ($phone=="" && $email==""))
 {
 	header('Content-type: application/json');
 	echo json_encode(["error"=>"Missing required fields"]);
