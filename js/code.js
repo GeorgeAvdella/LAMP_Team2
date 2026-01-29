@@ -5,6 +5,85 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+
+function showSignup()
+{
+    document.getElementById("loginDiv").style.display = "none";
+    document.getElementById("signupDiv").style.display = "block";
+    document.getElementById("signupResult").innerHTML = "";
+}
+
+function showLogin()
+{
+    document.getElementById("loginDiv").style.display = "block";
+    document.getElementById("signupDiv").style.display = "none";
+    document.getElementById("loginResult").innerHTML = "";
+}
+
+function doSignup()
+{
+    let newFirstName = document.getElementById("signupFirstName").value;
+    let newLastName = document.getElementById("signupLastName").value;
+    let newUsername = document.getElementById("signupUsername").value;
+    let newPassword = document.getElementById("signupPassword").value;
+
+    document.getElementById("signupResult").innerHTML = "";
+
+    // Validate fields
+    if (!newFirstName || !newLastName || !newUsername || !newPassword)
+    {
+        document.getElementById("signupResult").innerHTML = "Please fill in all fields";
+        return;
+    }
+
+    let tmp = {
+        firstName: newFirstName,
+        lastName: newLastName,
+        login: newUsername,
+        password: newPassword
+    };
+    let jsonPayload = JSON.stringify(tmp);
+
+    let url = urlBase + '/Signup.' + extension;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    try
+    {
+        xhr.onreadystatechange = function()
+        {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                let jsonObject = JSON.parse(xhr.responseText);
+
+                if (jsonObject.error && jsonObject.error !== "")
+                {
+                    document.getElementById("signupResult").innerHTML = jsonObject.error;
+                    return;
+                }
+
+                document.getElementById("signupResult").innerHTML = "Account created! Please login.";
+
+                // Clear form
+                document.getElementById("signupFirstName").value = "";
+                document.getElementById("signupLastName").value = "";
+                document.getElementById("signupUsername").value = "";
+                document.getElementById("signupPassword").value = "";
+
+                // Switch to login after 2 seconds
+                setTimeout(showLogin, 2000);
+            }
+        };
+        xhr.send(jsonPayload);
+    }
+    catch(err)
+    {
+        document.getElementById("signupResult").innerHTML = err.message;
+    }
+}
+
+
 function doLogin()
 {
 	userId = 0;
@@ -46,7 +125,7 @@ function doLogin()
 
 				saveCookie();
 	
-				window.location.href = "color.html";
+				window.location.href = "contacts.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -108,78 +187,42 @@ function doLogout()
 	window.location.href = "index.html";
 }
 
-function addColor()
-{
-	let newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
+function addContact() {
+    let first = document.getElementById("contactFirstName").value.trim();
+    let last = document.getElementById("contactLastName").value.trim();
+    let phone = document.getElementById("contactPhone").value.trim();
+    let email = document.getElementById("contactEmail").value.trim();
+    document.getElementById("addContactResult").innerText = "";
 
-	let tmp = {color:newColor,userId,userId};
-	let jsonPayload = JSON.stringify( tmp );
+    if(first === "" || last === "" || phone === "" && email === "") {
+        document.getElementById("addContactResult").innerText = "All required fields must be filled!";
+        return;
+    }
 
-	let url = urlBase + '/AddColor.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorAddResult").innerHTML = "Color has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
-	}
-	
+    let payload = {
+        userId: userId,
+        firstName: first,
+        lastName: last,
+        phone: phone,
+        email: email
+    };
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/LAMPAPI/AddContact.php", true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    xhr.onload = function() {
+        let resp = JSON.parse(xhr.responseText);
+        if(resp.error) {
+            document.getElementById("addContactResult").innerText = resp.error;
+        } else {
+            document.getElementById("addContactResult").innerText = "Contact added!";
+            loadContacts(); // refresh list
+        }
+    };
+    xhr.send(JSON.stringify(payload));
 }
 
-function searchColor()
+function deleteContact()
 {
-	let srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	let colorList = "";
-
-	let tmp = {search:srch,userId:userId};
-	let jsonPayload = JSON.stringify( tmp );
-
-	let url = urlBase + '/SearchColors.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
-				let jsonObject = JSON.parse( xhr.responseText );
-				
-				for( let i=0; i<jsonObject.results.length; i++ )
-				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						colorList += "<br />\r\n";
-					}
-				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
-	}
-	
+    
 }
