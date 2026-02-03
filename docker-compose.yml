@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    image: php:8.2-apache
+    image: php-mysqli-test
     container_name: lamp_web
     ports:
       - "8080:80"
