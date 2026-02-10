@@ -24,20 +24,52 @@
 
 <!-- Add Contact -->
 <div id="addContactDiv">
-    <h2>Add Contact</h2>
-    <input type="text" id="contactFirstName" placeholder="First Name">
-    <input type="text" id="contactLastName" placeholder="Last Name">
-    <input type="text" id="contactPhone" placeholder="Phone">
-    <input type="text" id="contactEmail" placeholder="Email">
-    <button type="button" onclick="addContact();">Add Contact</button>
+    <h2 id="inner-title">Add Contact</h2>
+    
+    <div class="input-container" id="boxFirst">
+        <span class="inner-ast">*</span>
+        <input type="text" id="contactFirstName" placeholder="First Name">
+    </div>
+
+    <div class="input-container" id="boxLast">
+        <span class="inner-ast">*</span>
+        <input type="text" id="contactLastName" placeholder="Last Name">
+    </div>
+
+    <div class="input-container" id="boxPhone">
+        <span class="inner-ast">*</span>
+        <input type="text" id="contactPhone" placeholder="Phone">
+    </div>
+
+    <div class="input-container" id="boxEmail">
+        <span class="inner-ast">*</span>
+        <input type="text" id="contactEmail" placeholder="Email">
+    </div>
+
+    <button type="button" class="buttons" onclick="addContact();">Add Contact</button>
     <p id="addContactResult"></p>
 </div>
 
-<!-- Delete Contact -->
-<div id="deleteContactDiv">
-    <h2>Delete Contact</h2>
-    <input type="text" id="deleteInput" placeholder="Name or Email">
-    <button type="button" onclick="deleteContact();">Delete Contact</button>
+<!-- Refresh Contacts -->
+<div id="controlsDiv">
+    <button type="button" class="buttons" onclick="loadContacts();">Show/Refresh Contacts</button>
+</div>
+
+<!-- View Contacts -->
+<div id="viewContactsDiv">
+    <h2>Your Contacts</h2>
+    <table id="contactsTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="contactList">
+            </tbody>
+    </table>
     <p id="deleteContactResult"></p>
 </div>
 
