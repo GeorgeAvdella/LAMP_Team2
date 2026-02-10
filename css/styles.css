@@ -156,3 +156,8 @@ select{
 .success {
 	color: #5cb85c;
 }
+
+.input-error {
+    border: 3px solid #fc100d !important; 
+    background-color: #fff0f0 !important;
+}

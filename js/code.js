@@ -20,19 +20,30 @@ function showLogin()
     document.getElementById("loginResult").innerHTML = "";
 }
 
-function doSignup()
-{
-    let newFirstName = document.getElementById("signupFirstName").value;
-    let newLastName = document.getElementById("signupLastName").value;
-    let newUsername = document.getElementById("signupUsername").value;
-    let newPassword = document.getElementById("signupPassword").value;
+function doSignup() {
+    const fields = ["FirstName", "LastName", "Username", "Password"];
+    fields.forEach(f => {
+        document.getElementById("lbl" + f).style.color = "black";
+        document.getElementById("ast" + f).innerHTML = "";
+    });
 
-    document.getElementById("signupResult").innerHTML = "";
+    let newFirstName = document.getElementById("signupFirstName").value.trim();
+    let newLastName = document.getElementById("signupLastName").value.trim();
+    let newUsername = document.getElementById("signupUsername").value.trim();
+    let newPassword = document.getElementById("signupPassword").value.trim();
 
-    // Validate fields
-    if (!newFirstName || !newLastName || !newUsername || !newPassword)
-    {
-        document.getElementById("signupResult").innerHTML = "Please fill in all fields";
+    let missing = false;
+
+    // check each field and mark in red if missing
+    if (!newFirstName) { markInvalid("FirstName"); missing = true; }
+    if (!newLastName) { markInvalid("LastName"); missing = true; }
+    if (!newUsername) { markInvalid("Username"); missing = true; }
+    if (!newPassword) { markInvalid("Password"); missing = true; }
+
+    if (missing) {
+        let result = document.getElementById("signupResult");
+        result.innerHTML = "Fields marked with * are required!";
+        result.style.color = "red";
         return;
     }
 
@@ -65,13 +76,13 @@ function doSignup()
 
                 document.getElementById("signupResult").innerHTML = "Account created! Please login.";
 
-                // Clear form
+                // clear form
                 document.getElementById("signupFirstName").value = "";
                 document.getElementById("signupLastName").value = "";
                 document.getElementById("signupUsername").value = "";
                 document.getElementById("signupPassword").value = "";
 
-                // Switch to login after 2 seconds
+                // switch to login after 2 seconds
                 setTimeout(showLogin, 2000);
             }
         };
@@ -83,15 +94,49 @@ function doSignup()
     }
 }
 
+function markInvalid(fieldName) {
+    document.getElementById("lbl" + fieldName).style.color = "red";
+    document.getElementById("ast" + fieldName).innerHTML = " *";
+    document.getElementById("ast" + fieldName).style.color = "red";
+}
+
 
 function doLogin()
 {
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	
-	let login = document.getElementById("loginName").value;
-	let password = document.getElementById("loginPassword").value;
+    userId = 0;
+    firstName = "";
+    lastName = "";
+    
+    // reset styles before checking
+    document.getElementById("inner-title-login").style.color = "black";
+    document.getElementById("lblLoginName").style.color = "black";
+    document.getElementById("astLoginName").innerHTML = "";
+    document.getElementById("lblLoginPassword").style.color = "black";
+    document.getElementById("astLoginPassword").innerHTML = "";
+
+    let login = document.getElementById("loginName").value.trim();
+    let password = document.getElementById("loginPassword").value.trim();
+    
+    let missing = false;
+    if (login === "") {
+        document.getElementById("lblLoginName").style.color = "red";
+        document.getElementById("astLoginName").innerHTML = " *";
+        document.getElementById("astLoginName").style.color = "red";
+        missing = true;
+    }
+    if (password === "") {
+        document.getElementById("lblLoginPassword").style.color = "red";
+        document.getElementById("astLoginPassword").innerHTML = " *";
+        document.getElementById("astLoginPassword").style.color = "red";
+        missing = true;
+    }
+
+    if (missing) {
+        document.getElementById("inner-title-login").style.color = "red";
+        document.getElementById("loginResult").innerHTML = "Fields marked with * are required!";
+        document.getElementById("loginResult").style.color = "red";
+        return; 
+    }
 //	var hash = md5( password );
 	
 	document.getElementById("loginResult").innerHTML = "";
@@ -188,23 +233,35 @@ function doLogout()
 }
 
 function addContact() {
-    let first = document.getElementById("contactFirstName").value.trim();
-    let last = document.getElementById("contactLastName").value.trim();
-    let phone = document.getElementById("contactPhone").value.trim();
-    let email = document.getElementById("contactEmail").value.trim();
-    document.getElementById("addContactResult").innerText = "";
+    let first = document.getElementById("contactFirstName");
+    let last = document.getElementById("contactLastName");
+    let phone = document.getElementById("contactPhone");
+    let email = document.getElementById("contactEmail");
+    let result = document.getElementById("addContactResult");
 
-    if(first === "" || last === "" || phone === "" && email === "") {
-        document.getElementById("addContactResult").innerText = "All required fields must be filled!";
+    // reset everything to normal state
+    [first, last, phone, email].forEach(el => el.classList.remove("input-error"));
+    result.innerText = "";
+
+    //  check for each field
+    let missing = false;
+    if (first.value.trim() === "") { first.classList.add("input-error"); missing = true; }
+    if (last.value.trim() === "") { last.classList.add("input-error"); missing = true; }
+    if (phone.value.trim() === "") { phone.classList.add("input-error"); missing = true; }
+    if (email.value.trim() === "") { email.classList.add("input-error"); missing = true; }
+
+    if (missing) {
+        result.innerText = "Fields marked * are required!";
+        result.style.color = "#fc100d";
         return;
     }
 
     let payload = {
         userId: userId,
-        firstName: first,
-        lastName: last,
-        phone: phone,
-        email: email
+        firstName: first.value.trim(),
+        lastName: last.value.trim(),
+        phone: phone.value.trim(),
+        email: email.value.trim()
     };
 
     let xhr = new XMLHttpRequest();
@@ -222,7 +279,63 @@ function addContact() {
     xhr.send(JSON.stringify(payload));
 }
 
-function deleteContact()
-{
-    
+function loadContacts() {
+    if (userId < 1) readCookie();
+
+    let payload = {
+        userId: userId,
+        search: "" // empty search returns all contacts 
+    };
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", urlBase + "/SearchContacts." + extension, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    xhr.onload = function() {
+        if (this.status == 200) {
+            let jsonObject = JSON.parse(this.responseText);
+            let tableBody = document.getElementById("contactList");
+            tableBody.innerHTML = ""; // clear existing rows
+
+            if (jsonObject.results && jsonObject.results.length > 0) {
+                jsonObject.results.forEach(contact => {
+                    let row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${contact.firstName} ${contact.lastName}</td>
+                        <td>${contact.Phone}</td>
+                        <td>${contact.Email}</td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteContactByID(${contact.ID})">Delete</button>
+                        </td>
+                    `;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>No contacts found.</td></tr>";
+            }
+        }
+    };
+    xhr.send(JSON.stringify(payload));
+}
+
+function deleteContactByID(id) {
+    if (!confirm("Are you sure you want to delete this contact?")) return;
+
+    let payload = {
+        userId: userId,
+        contactId: id 
+    };
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", urlBase + "/DeleteContact." + extension, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    xhr.onload = function() {
+        let resp = JSON.parse(this.responseText);
+        if (!resp.error || resp.error === "") {
+            loadContacts(); // refresh after del
+        } else {
+            alert("Error: " + resp.error);
+        }
+    };
+    xhr.send(JSON.stringify(payload));
 }

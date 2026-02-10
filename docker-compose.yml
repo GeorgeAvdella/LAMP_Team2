@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    image: php:8.2-apache
+    build: .
     container_name: lamp_web
     ports:
       - "8080:80"
@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      - MYSQL_HOST=db # you need to change hostname in config.php for local docker development
+      - MYSQL_HOST=db
       - MYSQL_USER=TheBeast
       - MYSQL_PASSWORD=WeLoveCOP4331
       - MYSQL_DATABASE=COP4331
