@@ -46,12 +46,12 @@ function doSignup() {
         result.style.color = "red";
         return;
     }
-
+    let hash = md5(newPassword);
     let tmp = {
         firstName: newFirstName,
         lastName: newLastName,
         login: newUsername,
-        password: newPassword
+        password: hash
     };
     let jsonPayload = JSON.stringify(tmp);
 
@@ -137,12 +137,11 @@ function doLogin()
         document.getElementById("loginResult").style.color = "red";
         return; 
     }
-//	var hash = md5( password );
+    let hash = md5(newPassword);
 	
 	document.getElementById("loginResult").innerHTML = "";
 
-	let tmp = {login:login,password:password};
-//	var tmp = {login:login,password:hash};
+	let tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify( tmp );
 	
 	let url = urlBase + '/Login.' + extension;
