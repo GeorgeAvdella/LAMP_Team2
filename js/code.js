@@ -137,7 +137,7 @@ function doLogin()
         document.getElementById("loginResult").style.color = "red";
         return; 
     }
-    let hash = md5(newPassword);
+    let hash = md5(password);
 	
 	document.getElementById("loginResult").innerHTML = "";
 
