@@ -7,6 +7,11 @@
     <script type="text/javascript" src="js/md5.js"></script>
     <script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -14,7 +19,7 @@
 
 <!-- Login Form -->
 <div id="loginDiv">
-    <span id="inner-title-login" style="color: black;">Login</span><br /><br />
+    <span id="inner-title-login">Login</span><br /><br />
     
     <div class="input-group">
         <label id="lblLoginName" for="loginName">Username<span id="astLoginName"></span></label>
@@ -29,7 +34,7 @@
     <button type="button" id="loginButton" class="buttons" onclick="doLogin();">Login</button><br />
     <span id="loginResult"></span>
     <br />
-    <button type="button" class="buttons" onclick="showSignup();">Create New Account</button>
+    <button type="button" class="buttons" onclick="showSignup();">Create Account</button>
 </div>
 
 <!-- Signup Form -->
