@@ -1,16 +1,30 @@
 body 
 {
+    background-image: url(../images/background.jpg);
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    background-attachment: fixed;
+
     background-color: #707070;
 }
 
 #title 
 {
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
     font-size: 40px;
     width: 100%;
-    margin: 2% 5%;
+    margin: 20px 0;
     text-align: center;
-    font-family: 'Ubuntu', sans-serif;
-    color: #FFFFFF;
+    color:  	#360f5a;
 }
 
 #loginDiv, #signupDiv
@@ -18,18 +32,37 @@ body
 	max-width: 420px;
     margin: 60px auto;
 	padding: 30px;
-	background-color: #666666;
+	
+    background-color: rgba(102, 102, 102, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
 	border-radius: 12px;
 	box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#addContactDiv, #viewContactsDiv{
+
+    max-width: 420px;
+    margin: 60px auto;
+	
+    background-color: rgba(102, 102, 102, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+	border-radius: 12px;
+	box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 #loggedInDiv
 {
     font-size: 30px;
     width: 70%;
-    margin-left: 15%;
+    margin: 20px auto;
     padding: 25px;
-    background-color: #b2b2b2;
+
 }
 
 #accessUIDiv
@@ -47,7 +80,12 @@ body
     border-radius: 25px;
     width: 50%;
     margin-left: 25%;
-    font-family: 'Ubuntu', sans-serif;
+    
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: #360f5a;
 
 	cursor: pointer;
 	transition: background-color 0.2s ease, transform 0.1s ease;
@@ -63,14 +101,45 @@ body
 	transform: scale(0.98);
 }
 
-#loginName
-{
-	font-size: 30px;
+.delete-btn {
+
+    font-size: 15px;
+    border-radius: 25px;
+    width: 80%;
+
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: #360f5a;
+
+    cursor: pointer;
+	transition: background-color 0.2s ease, transform 0.1s ease;
 }
-#loginPassword
-{
-	font-size: 30px;
+
+.delete-btn:hover{
+    background-color: #00d5124f;
+    color: #FFFFFF;
+    opacity: 50%;
 }
+
+.delete-btn:active {
+	transform: scale(0.98);
+}
+
+
+#loginName, #loginPassword, #signupFirstName, #signupLastName, #signupUsername, #signupPassword
+{
+	font-size: 1.1em;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    color: #000;    
+
+}
+
+
 #searchText
 {
 	font-size: 30px;
@@ -84,33 +153,30 @@ input[type="text"],input[type="password"]{
     border-radius: 25px;
     text-align: center;
     width: 80%;
-    margin-left: 10%;
-    margin-bottom: 2%;
-    font-family: 'Ubuntu', sans-serif;
-	font-size: 18px;
+    margin: auto;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+	font-size: 1.1em;
 }
 
-#inner-title{
-    display: inline-block;
-    font-size: 1.2em;
-	font-weight: bold;
-    width: 90%;
+#inner-title, #inner-title-login, #loginResult, #signupResult, #addContactResult {
+    display: block; 
+    width: 100%;
+    
     text-align: center;
-    margin-left: 5%;
-    margin-bottom: 15px;
-    font-family: 'Ubuntu', sans-serif;
-    color: #95060a;
-}
+    
+    margin-left: 0;
+    margin-right: 0;
 
-#loginResult{
-    display: inline-block;
-    font-size: 0.8em;
-    width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-bottom: 2%;
-    font-family: 'Ubuntu', sans-serif;
-    color: #95060a;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    
+    font-size: 2em;
+    color: #ffffff;
 }
 
 #userName{
@@ -120,10 +186,56 @@ input[type="text"],input[type="password"]{
     text-align: center;
 }
 
+#lblLoginName, #lblLoginPassword, #lblFirstName, #lblLastName, #lblUsername, #lblPassword{
+    font-size: 1.4em;
+}
+
 #logoutButton{
     width: 20%;
     margin-left: 40%;
 }
+
+
+#viewContactsDiv {
+    max-width: 600px;
+
+
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+
+}
+
+#contactsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: white; 
+}
+
+#contactsTable th {
+    background-color: rgba(54, 15, 90, 0.4); 
+    padding: 12px;
+    text-align: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+}
+
+#contactsTable td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.95em;
+}
+
+#contactsTable tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
 
 select{
     width: 30%;
@@ -157,7 +269,39 @@ select{
 	color: #5cb85c;
 }
 
+.input-group{
+    text-align: center;
+    
+    
+
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.1em;
+    color: #19443b;
+}
+
 .input-error {
     border: 3px solid #fc100d !important; 
     background-color: #fff0f0 !important;
 }
+
+.inner-ast {
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.1em;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+
+.input-container {
+    text-align: center;
+    width: 100%;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
