@@ -269,8 +269,11 @@ function addContact() {
     xhr.onload = function() {
         let resp = JSON.parse(xhr.responseText);
         if(resp.error) {
+            document.getElementById("addContactResult").className = "error";
             document.getElementById("addContactResult").innerText = resp.error;
+            
         } else {
+            document.getElementById("addContactResult").className = "success";
             document.getElementById("addContactResult").innerText = "Contact added!";
             loadContacts(); // refresh list
         }
