@@ -282,11 +282,16 @@ function addContact() {
 }
 
 function loadContacts() {
+    // Ensure we have a valid user ID
     if (userId < 1) readCookie();
+
+    // Grab the text from the search bar
+    let searchInput = document.getElementById("searchText");
+    let searchValue = searchInput ? searchInput.value : "";
 
     let payload = {
         userId: userId,
-        search: "" // empty search returns all contacts 
+        search: searchValue // sends the text (or empty string) 
     };
 
     let xhr = new XMLHttpRequest();
@@ -297,8 +302,9 @@ function loadContacts() {
         if (this.status == 200) {
             let jsonObject = JSON.parse(this.responseText);
             let tableBody = document.getElementById("contactList");
-            tableBody.innerHTML = ""; // clear existing rows
+            tableBody.innerHTML = ""; // Clear existing rows
 
+            // Check if there are results
             if (jsonObject.results && jsonObject.results.length > 0) {
                 jsonObject.results.forEach(contact => {
                     let row = tableBody.insertRow();
@@ -312,7 +318,7 @@ function loadContacts() {
                     `;
                 });
             } else {
-                tableBody.innerHTML = "<tr><td colspan='4'>No contacts found.</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='4' style='text-align:center;'>No contacts found.</td></tr>";
             }
         }
     };
