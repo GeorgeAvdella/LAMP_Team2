@@ -282,16 +282,14 @@ function addContact() {
 }
 
 function loadContacts() {
-    // Ensure we have a valid user ID
     if (userId < 1) readCookie();
 
-    // Grab the text from the search bar
     let searchInput = document.getElementById("searchText");
     let searchValue = searchInput ? searchInput.value : "";
 
     let payload = {
         userId: userId,
-        search: searchValue // sends the text (or empty string) 
+        search: searchValue
     };
 
     let xhr = new XMLHttpRequest();
@@ -302,24 +300,105 @@ function loadContacts() {
         if (this.status == 200) {
             let jsonObject = JSON.parse(this.responseText);
             let tableBody = document.getElementById("contactList");
-            tableBody.innerHTML = ""; // Clear existing rows
+            tableBody.innerHTML = ""; // clear existing rows
 
-            // Check if there are results
             if (jsonObject.results && jsonObject.results.length > 0) {
                 jsonObject.results.forEach(contact => {
                     let row = tableBody.insertRow();
+                    
+                    // save the contact info into the rows "dataset"
+                    // so we can grab it easily when the user clicks edit
+                    row.id = `row-${contact.ID}`;
+                    row.dataset.first = contact.firstName;
+                    row.dataset.last  = contact.lastName;
+                    row.dataset.phone = contact.Phone;
+                    row.dataset.email = contact.Email;
+
                     row.innerHTML = `
                         <td>${contact.firstName} ${contact.lastName}</td>
                         <td>${contact.Phone}</td>
                         <td>${contact.Email}</td>
                         <td>
+                            <button class="edit-btn" onclick="editContact(${contact.ID})">Edit</button>
                             <button class="delete-btn" onclick="deleteContactByID(${contact.ID})">Delete</button>
                         </td>
                     `;
                 });
             } else {
-                tableBody.innerHTML = "<tr><td colspan='4' style='text-align:center;'>No contacts found.</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='4' id='no-contacts-msg'>No contacts found.</td></tr>";
             }
+        }
+    };
+    xhr.send(JSON.stringify(payload));
+}
+
+function editContact(id) {
+    let row = document.getElementById(`row-${id}`);
+    
+    let first = row.dataset.first;
+    let last  = row.dataset.last;
+    let phone = row.dataset.phone;
+    let email = row.dataset.email;
+
+    row.innerHTML = `
+        <td>
+            <input type="text" id="edit-first-${id}" value="${first}" placeholder="First" style="width:40%;" aria-label="Edit First Name">
+            <input type="text" id="edit-last-${id}" value="${last}" placeholder="Last" style="width:40%;" aria-label="Edit Last Name">
+        </td>
+        <td>
+            <input type="text" id="edit-phone-${id}" value="${phone}" style="width:90%;" aria-label="Edit Phone">
+        </td>
+        <td>
+            <input type="text" id="edit-email-${id}" value="${email}" style="width:90%;" aria-label="Edit Email">
+        </td>
+        <td>
+            <button class="save-btn" onclick="updateContact(${id})">Save</button>
+            <button class="cancel-btn" onclick="loadContacts()">Cancel</button>
+            <div id="edit-error-${id}" class="error" style="font-size:12px; margin-top:5px;"></div>
+        </td>
+    `;
+}
+
+function updateContact(id) {
+    let newFirst = document.getElementById(`edit-first-${id}`);
+    let newLast  = document.getElementById(`edit-last-${id}`);
+    let newPhone = document.getElementById(`edit-phone-${id}`);
+    let newEmail = document.getElementById(`edit-email-${id}`);
+    let errorSpan = document.getElementById(`edit-error-${id}`);
+
+    [newFirst, newLast, newPhone, newEmail].forEach(el => el.classList.remove("input-error"));
+    errorSpan.innerText = "";
+
+    let missing = false;
+    if (newFirst.value.trim() === "") { newFirst.classList.add("input-error"); missing = true; }
+    if (newLast.value.trim() === "") { newLast.classList.add("input-error"); missing = true; }
+    if (newPhone.value.trim() === "") { newPhone.classList.add("input-error"); missing = true; }
+    if (newEmail.value.trim() === "") { newEmail.classList.add("input-error"); missing = true; }
+
+    if (missing) {
+        errorSpan.innerHTML = "* All fields are required";
+        return; 
+    }
+
+    let payload = {
+        userId: userId,
+        contactId: id,
+        firstName: newFirst.value.trim(),
+        lastName: newLast.value.trim(),
+        phone: newPhone.value.trim(),
+        email: newEmail.value.trim()
+    };
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", urlBase + "/UpdateContact." + extension, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    xhr.onload = function() {
+        let resp = JSON.parse(this.responseText);
+        if (resp.error) {
+            errorSpan.innerText = resp.error;
+        } else {
+            loadContacts();
         }
     };
     xhr.send(JSON.stringify(payload));
@@ -342,7 +421,7 @@ function deleteContactByID(id) {
         if (!resp.error || resp.error === "") {
             loadContacts(); // refresh after del
         } else {
-            alert("Error: " + resp.error);
+            document.getElementById("deleteContactResult").innerText = resp.error;
         }
     };
     xhr.send(JSON.stringify(payload));
