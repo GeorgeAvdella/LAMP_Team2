@@ -101,30 +101,71 @@ body
 	transform: scale(0.98);
 }
 
-.delete-btn {
+#contactsTable td:last-child {
+    display: flex;            
+    justify-content: center;  
+    gap: 10px;           
+    align-items: center;     
+    min-width: 160px;         
+    border-bottom: none;       
+    padding-top: 15px;        
+}
 
-    font-size: 15px;
-    border-radius: 25px;
-    width: 80%;
+#contactsTable input[type="text"] {
+    width: 40% !important;     
+    margin: 0 2px;            
+    padding: 5px;
+    font-size: 0.9em;
+    display: inline-block;     
+}
 
+#no-contacts-msg {
+    text-align: center !important;
+    display: table-cell !important; 
+    padding: 30px !important;
+    color: #ffffff;
     font-family: 'Inter', sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    color: #360f5a;
+    font-size: 1.2em;
+    width: 100%;
+}
 
+.edit-btn, .delete-btn, .save-btn, .cancel-btn {
+    width: auto;               
+    min-width: 60px;           
+    padding: 8px 15px;
+    border-radius: 20px;       
+    border: none;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
     cursor: pointer;
-	transition: background-color 0.2s ease, transform 0.1s ease;
+    text-align: center;
+    transition: opacity 0.2s;
+    color: white;             
+    margin: 0;                
 }
 
-.delete-btn:hover{
-    background-color: #00d5124f;
-    color: #FFFFFF;
-    opacity: 50%;
+
+.edit-btn {
+    background-color: #ffffff; 
+    color: #000000; 
 }
 
-.delete-btn:active {
-	transform: scale(0.98);
+.delete-btn {
+    background-color: #dc3545; 
+}
+
+.save-btn {
+    background-color: #28a745; 
+}
+
+.cancel-btn {
+    background-color: #ffc107; 
+    color: #333;               
+}
+
+.edit-btn:hover, .delete-btn:hover, .save-btn:hover, .cancel-btn:hover {
+    opacity: 0.8;
 }
 
 
@@ -136,7 +177,6 @@ body
     margin-bottom: 15px;
     margin-top: 15px;
     color: #000;    
-
 }
 
 

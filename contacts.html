@@ -28,22 +28,22 @@
     
     <div class="input-container" id="boxFirst">
         <span class="inner-ast">*</span>
-        <input type="text" id="contactFirstName" placeholder="First Name">
+        <input type="text" id="contactFirstName" placeholder="First Name" aria-label="First Name">
     </div>
 
     <div class="input-container" id="boxLast">
         <span class="inner-ast">*</span>
-        <input type="text" id="contactLastName" placeholder="Last Name">
+        <input type="text" id="contactLastName" placeholder="Last Name" aria-label="Last Name">
     </div>
 
     <div class="input-container" id="boxPhone">
         <span class="inner-ast">*</span>
-        <input type="text" id="contactPhone" placeholder="Phone">
+        <input type="text" id="contactPhone" placeholder="Phone" aria-label="Phone">
     </div>
 
     <div class="input-container" id="boxEmail">
         <span class="inner-ast">*</span>
-        <input type="text" id="contactEmail" placeholder="Email">
+        <input type="text" id="contactEmail" placeholder="Email" aria-label="Email">
     </div>
 
     <button type="button" class="buttons" onclick="addContact();">Add Contact</button>
@@ -53,7 +53,7 @@
 <!-- Refresh Contacts -->
 <div id="controlsDiv">
     <div class="input-container" style="margin: 0 auto 10px auto;">
-        <input type="text" id="searchText" placeholder="Search..." onkeyup="loadContacts();">
+        <input type="text" id="searchText" placeholder="Search..." onkeyup="loadContacts();" aria-label="Search Contacts">
     </div>
     
     <button type="button" class="buttons" onclick="loadContacts();">Show/Refresh Contacts</button>
@@ -72,7 +72,7 @@
             </tr>
         </thead>
         <tbody id="contactList">
-            </tbody>
+        </tbody>
     </table>
     <p id="deleteContactResult"></p>
 </div>
