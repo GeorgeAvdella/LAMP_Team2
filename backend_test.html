@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>COP 4331 LAMP Stack Demo</title>
+  <link href="css/styles.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
+  <style>
+    pre {
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      white-space: pre-wrap;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+    }
+    .section {
+      max-width: 520px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #666666;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    .section .buttons {
+      font-size: 18px;
+      width: 60%;
+      margin-left: 20%;
+    }
+    .section input[type="text"],
+    .section input[type="password"] {
+      font-size: 18px;
+    }
+    .label {
+      display: inline-block;
+      width: 90%;
+      text-align: center;
+      margin-left: 5%;
+      margin-bottom: 10px;
+      font-family: 'Ubuntu', sans-serif;
+      color: #95060a;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">COP 4331 LAMP Stack Demo</h1>
+
+  <div id="loginDiv">
+    <span id="inner-title">Quick API Test</span>
+    <input type="text" id="baseUrl" placeholder="Base URL" value="http://dev.cop4331.xyz" />
+  </div>
+
+  <div class="section">
+    <span class="label">Signup</span>
+    <input type="text" id="suFirst" placeholder="First Name" value="Test" />
+    <input type="text" id="suLast" placeholder="Last Name" value="User" />
+    <input type="text" id="suLogin" placeholder="Login" value="testuser123" />
+    <input type="text" id="suPass" placeholder="Password" value="pass123" />
+    <button type="button" class="buttons" onclick="signup()">Signup</button>
+    <pre id="signupOut"></pre>
+  </div>
+
+  <div class="section">
+    <span class="label">Login</span>
+    <input type="text" id="liLogin" placeholder="Login" value="testuser123" />
+    <input type="text" id="liPass" placeholder="Password" value="pass123" />
+    <button type="button" class="buttons" onclick="login()">Login</button>
+    <pre id="loginOut"></pre>
+  </div>
+
+  <div class="section">
+    <span class="label">Add Color</span>
+    <input type="text" id="acUserId" placeholder="User ID" value="10" />
+    <input type="text" id="acColor" placeholder="Color" value="Blue" />
+    <button type="button" class="buttons" onclick="addColor()">Add Color</button>
+    <pre id="addOut"></pre>
+  </div>
+
+  <div class="section">
+    <span class="label">Search Colors</span>
+    <input type="text" id="scUserId" placeholder="User ID" value="10" />
+    <input type="text" id="scSearch" placeholder="Search" value="Bl" />
+    <button type="button" class="buttons" onclick="searchColors()">Search</button>
+    <pre id="searchOut"></pre>
+  </div>
+
+  <script>
+    function endpoint(path) {
+      const base = document.getElementById('baseUrl').value.replace(/\/$/, '');
+      return base + '/LAMPAPI/' + path;
+    }
+
+    async function postJson(url, body) {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const text = await res.text();
+      return { status: res.status, text };
+    }
+
+    async function signup() {
+      const out = document.getElementById('signupOut');
+      out.textContent = '...';
+      const body = {
+        firstName: document.getElementById('suFirst').value,
+        lastName: document.getElementById('suLast').value,
+        login: document.getElementById('suLogin').value,
+        password: document.getElementById('suPass').value
+      };
+      const r = await postJson(endpoint('Signup.php'), body);
+      out.textContent = r.status + '\n' + r.text;
+    }
+
+    async function login() {
+      const out = document.getElementById('loginOut');
+      out.textContent = '...';
+      const body = {
+        login: document.getElementById('liLogin').value,
+        password: document.getElementById('liPass').value
+      };
+      const r = await postJson(endpoint('Login.php'), body);
+      out.textContent = r.status + '\n' + r.text;
+    }
+
+    async function addColor() {
+      const out = document.getElementById('addOut');
+      out.textContent = '...';
+      const body = {
+        color: document.getElementById('acColor').value,
+        userId: document.getElementById('acUserId').value
+      };
+      const r = await postJson(endpoint('AddColor.php'), body);
+      out.textContent = r.status + '\n' + r.text;
+    }
+
+    async function searchColors() {
+      const out = document.getElementById('searchOut');
+      out.textContent = '...';
+      const body = {
+        search: document.getElementById('scSearch').value,
+        userId: document.getElementById('scUserId').value
+      };
+      const r = await postJson(endpoint('SearchColors.php'), body);
+      out.textContent = r.status + '\n' + r.text;
+    }
+  </script>
+</body>
+</html>
