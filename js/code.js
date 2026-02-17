@@ -11,6 +11,10 @@ function showSignup()
     document.getElementById("loginDiv").style.display = "none";
     document.getElementById("signupDiv").style.display = "block";
     document.getElementById("signupResult").innerHTML = "";
+
+    let result = document.getElementById("signupResult");
+    result.innerHTML = "";
+    result.classList.remove("success", "error");
 }
 
 function showLogin()
@@ -22,8 +26,10 @@ function showLogin()
 
 function doSignup() {
     const fields = ["FirstName", "LastName", "Username", "Password"];
+    
     fields.forEach(f => {
         document.getElementById("ast" + f).innerHTML = "";
+        document.getElementById("lbl" + f).style.color = "white"; 
     });
 
     let newFirstName = document.getElementById("signupFirstName").value.trim();
@@ -33,18 +39,20 @@ function doSignup() {
 
     let missing = false;
 
-    // check each field and mark in red if missing
     if (!newFirstName) { markInvalid("FirstName"); missing = true; }
     if (!newLastName) { markInvalid("LastName"); missing = true; }
     if (!newUsername) { markInvalid("Username"); missing = true; }
     if (!newPassword) { markInvalid("Password"); missing = true; }
 
+    let result = document.getElementById("signupResult");
+
     if (missing) {
-        let result = document.getElementById("signupResult");
+        result.classList.remove("success");
+        result.classList.add("error");
         result.innerHTML = "Fields marked with * are required!";
-        result.style.color = "red";
         return;
     }
+
     let hash = md5(newPassword);
     let tmp = {
         firstName: newFirstName,
@@ -52,44 +60,39 @@ function doSignup() {
         login: newUsername,
         password: hash
     };
-    let jsonPayload = JSON.stringify(tmp);
-
+    
     let url = urlBase + '/Signup.' + extension;
-
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    try
-    {
-        xhr.onreadystatechange = function()
-        {
-            if (this.readyState == 4 && this.status == 200)
-            {
+
+    try {
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
 
-                if (jsonObject.error && jsonObject.error !== "")
-                {
-                    document.getElementById("signupResult").innerHTML = jsonObject.error;
+                if (jsonObject.error && jsonObject.error !== "") {
+                    result.classList.remove("success");
+                    result.classList.add("error");
+                    result.innerHTML = jsonObject.error;
                     return;
                 }
 
-                document.getElementById("signupResult").innerHTML = "Account created! Please login.";
+                result.classList.remove("error");
+                result.classList.add("success");
+                result.innerHTML = "Account created! Please login.";
 
-                // clear form
                 document.getElementById("signupFirstName").value = "";
                 document.getElementById("signupLastName").value = "";
                 document.getElementById("signupUsername").value = "";
                 document.getElementById("signupPassword").value = "";
 
-                // switch to login after 2 seconds
                 setTimeout(showLogin, 2000);
             }
         };
-        xhr.send(jsonPayload);
-    }
-    catch(err)
-    {
-        document.getElementById("signupResult").innerHTML = err.message;
+        xhr.send(JSON.stringify(tmp));
+    } catch(err) {
+        result.innerHTML = err.message;
     }
 }
 
