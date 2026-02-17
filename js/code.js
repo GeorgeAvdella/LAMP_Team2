@@ -23,7 +23,6 @@ function showLogin()
 function doSignup() {
     const fields = ["FirstName", "LastName", "Username", "Password"];
     fields.forEach(f => {
-        document.getElementById("lbl" + f).style.color = "black";
         document.getElementById("ast" + f).innerHTML = "";
     });
 
@@ -108,10 +107,7 @@ function doLogin()
     lastName = "";
     
     // reset styles before checking
-    document.getElementById("inner-title-login").style.color = "black";
-    document.getElementById("lblLoginName").style.color = "black";
     document.getElementById("astLoginName").innerHTML = "";
-    document.getElementById("lblLoginPassword").style.color = "black";
     document.getElementById("astLoginPassword").innerHTML = "";
 
     let login = document.getElementById("loginName").value.trim();
