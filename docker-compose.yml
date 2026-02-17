@@ -14,7 +14,7 @@ services:
       - MYSQL_HOST=db
       - MYSQL_USER=TheBeast
       - MYSQL_PASSWORD=WeLoveCOP4331
-      - MYSQL_DATABASE=COP4331
+      - MYSQL_DATABASE=project_dev
 
   db:
     image: mysql:8.0
@@ -22,7 +22,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: COP4331
+      MYSQL_DATABASE: project_dev
       MYSQL_USER: TheBeast
       MYSQL_PASSWORD: WeLoveCOP4331
     ports:
