@@ -240,6 +240,7 @@ function addContact() {
     // reset everything to normal state
     [first, last, phone, email].forEach(el => el.classList.remove("input-error"));
     result.innerText = "";
+    result.classList.remove("error", "success"); // clear color state
 
     //  check for each field
     let missing = false;
@@ -249,8 +250,8 @@ function addContact() {
     if (email.value.trim() === "") { email.classList.add("input-error"); missing = true; }
 
     if (missing) {
+        result.classList.add("error");
         result.innerText = "Fields marked * are required!";
-        result.style.color = "#fc100d";
         return;
     }
 
@@ -267,14 +268,17 @@ function addContact() {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     xhr.onload = function() {
         let resp = JSON.parse(xhr.responseText);
+        result.classList.remove("error", "success"); 
+
         if(resp.error) {
-            document.getElementById("addContactResult").className = "error";
-            document.getElementById("addContactResult").innerText = resp.error;
-            
+            result.classList.add("error");
+            result.innerText = resp.error;
         } else {
-            document.getElementById("addContactResult").className = "success";
-            document.getElementById("addContactResult").innerText = "Contact added!";
-            loadContacts(); // refresh list
+            result.classList.add("success");
+            result.innerText = "Contact added!";
+            
+            [first, last, phone, email].forEach(el => el.value = "");
+            loadContacts(); 
         }
     };
     xhr.send(JSON.stringify(payload));
