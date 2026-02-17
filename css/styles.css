@@ -1,16 +1,12 @@
 body 
 {
     background-image: url(../images/background.jpg);
-
     background-size: cover;
-
     background-position: center;
-
     background-repeat: no-repeat;
-
     background-attachment: fixed;
-
-    background-color: #707070;
+    /*background-color: #707070;*/
+    background-color: #31d5b6;
 }
 
 #title 
@@ -183,7 +179,14 @@ body
 #searchText
 {
 	font-size: 30px;
+    width: 30%;
 }
+
+#showContactsButton {
+    width: 20%;
+    margin-left: 40%;
+}
+
 #colorText
 {
 	font-size: 30px;
@@ -238,7 +241,7 @@ input[type="text"],input[type="password"]{
 
 
 #viewContactsDiv {
-    max-width: 600px;
+    max-width: 60%;
 
 
     font-family: 'Inter', sans-serif;
@@ -252,7 +255,8 @@ input[type="text"],input[type="password"]{
 #contactsTable {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin: 20px auto;
+    table-layout: fixed;
     color: white; 
 }
 
