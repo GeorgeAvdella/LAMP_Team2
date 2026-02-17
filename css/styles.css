@@ -228,6 +228,7 @@ input[type="text"],input[type="password"]{
 
 #lblLoginName, #lblLoginPassword, #lblFirstName, #lblLastName, #lblUsername, #lblPassword{
     font-size: 1.4em;
+    color: white;
 }
 
 #logoutButton{
@@ -345,3 +346,16 @@ select{
     margin-bottom: 15px;
 }
 
+
+#signupResult.success, #loginResult.success, #addContactResult.success {
+    color: #5cb85c !important;
+}
+
+#signupResult.error, #loginResult.error, #addContactResult.error {
+    color: #fc100d !important;
+}
+
+/*  Smooth transition for the color changes */
+#signupResult, #loginResult {
+    transition: color 0.3s ease;
+}
